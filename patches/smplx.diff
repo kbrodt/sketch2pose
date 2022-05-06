@@ -1,0 +1,49 @@
++++ venv/lib/python3.10/site-packages/smplx/body_models.py
+@@ -366,7 +366,7 @@
+             num_repeats = int(batch_size / betas.shape[0])
+             betas = betas.expand(num_repeats, -1)
+ 
+-        vertices, joints = lbs(betas, full_pose, self.v_template,
++        vertices, joints, _ = lbs(betas, full_pose, self.v_template,
+                                self.shapedirs, self.posedirs,
+                                self.J_regressor, self.parents,
+                                self.lbs_weights, pose2rot=pose2rot)
+@@ -1228,7 +1228,7 @@
+ 
+         shapedirs = torch.cat([self.shapedirs, self.expr_dirs], dim=-1)
+ 
+-        vertices, joints = lbs(shape_components, full_pose, self.v_template,
++        vertices, joints, A = lbs(shape_components, full_pose, self.v_template,
+                                shapedirs, self.posedirs,
+                                self.J_regressor, self.parents,
+                                self.lbs_weights, pose2rot=pose2rot,
+@@ -1283,7 +1283,9 @@
+                              right_hand_pose=right_hand_pose,
+                              jaw_pose=jaw_pose,
+                              v_shaped=v_shaped,
+-                             full_pose=full_pose if return_full_pose else None)
++                             full_pose=full_pose if return_full_pose else None,
++                             A=A,
++                             )
+         return output
+ 
+ 
++++ venv/lib/python3.10/site-packages/smplx/lbs.py
+@@ -245,7 +245,7 @@
+ 
+     verts = v_homo[:, :, :3, 0]
+ 
+-    return verts, J_transformed
++    return verts, J_transformed, (A, J)
+ 
+ 
+ def vertices2joints(J_regressor: Tensor, vertices: Tensor) -> Tensor:
++++ venv/lib/python3.10/site-packages/smplx/utils.py
+@@ -71,6 +71,7 @@
+ class SMPLXOutput(SMPLHOutput):
+     expression: Optional[Tensor] = None
+     jaw_pose: Optional[Tensor] = None
++    A: Optional[Tensor] = None
+ 
+ 
+ @dataclass

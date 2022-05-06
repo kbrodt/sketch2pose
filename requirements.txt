@@ -1,0 +1,16 @@
+matplotlib>=3.5.1
+numpy>=1.22.3
+opencv_python>=4.5.5.64
+Pillow>=9.1.0
+plotly>=5.7.0
+pyrender>=0.1.45
+scikit_image>=0.19.2
+scipy>=1.8.0
+Shapely>=1.8.1.post1
+scikit-image>=0.19.2
+tensorboard>=2.8.0
+torchgeometry>=0.1.2
+tqdm>=4.64.0
+trimesh>=3.10.8
+git+https://github.com/muelea/selfcontact.git@08da422526419c24736c0616bca49623e442c26a
+git+https://github.com/vchoutas/smplx.git@5fa20519735cceda19afed0beeabd53caef711cd
